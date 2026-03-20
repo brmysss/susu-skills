@@ -1,0 +1,11 @@
+{
+  "name": "cflow-cli",
+  "version": "1.0.0",
+  "description": "CLI tool for CFlow (Memos) - search, create, update, and browse memos from the command line",
+  "main": "index.js",
+  "bin": {
+    "cflow": "./index.js"
+  },
+  "keywords": ["cflow", "memos", "cli", "note-taking"],
+  "license": "MIT"
+}
