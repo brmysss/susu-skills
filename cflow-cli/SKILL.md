@@ -1,10 +1,15 @@
 ---
 name: cflow-cli
+version: 1.0.0
+github: https://github.com/brmysss/susu-skills/tree/main/cflow-cli
 description: |
   CFlow (Memos) CLI tool for managing personal micro-notes. Search, browse, create, and update memos on a self-hosted CFlow/Memos instance. Triggers: user asks to check CFlow, search memos, create a memo, browse notes, view tags, or asks about CFlow content; check CFlow, search CFlow, write a memo, browse notes, view tags, create a note etc.
 ---
 
 # cflow-cli
+
+> **GitHub**: https://github.com/brmysss/susu-skills/tree/main/cflow-cli
+> **Version**: 1.0.0 (2026-03-20)
 
 CLI tool for CFlow (Memos) — a self-hosted micro-note service. Search, browse, create, and update memos directly from the command line.
 
@@ -160,6 +165,12 @@ Found 5 results for "AI"
 - Tags are extracted from memo content (inline `#tag` format)
 - Hierarchical tags supported: `#parent/child`
 - No delete operation by design — memos are preserved
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| v1.0.0 | 2026-03-20 | Initial release: list, search (keyword + tag), get, create, update, tags, count, stats |
 
 ## License
 
