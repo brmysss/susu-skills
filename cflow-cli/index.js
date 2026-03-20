@@ -86,12 +86,27 @@ function formatTable(memos) {
 async function cmdList(args) {
   const limit = getFlag(args, "--limit") || 20;
   const format = getFlag(args, "-f") || "table";
+  const date = getFlag(args, "--date");
+  const today = args.includes("--today");
 
-  const res = await request("GET", `/api/v1/memo?limit=${limit}`);
-  const memos = extractMemos(res);
-
-  if (format === "json") formatJson(memos);
-  else formatTable(memos);
+  if (date || today) {
+    // Date-based filtering: fetch all, filter by date
+    const res = await request("GET", `/api/v1/memo?limit=9999`);
+    let memos = extractMemos(res);
+    const { start, end, label } = parseDateRange(date, today);
+    memos = memos.filter((m) => {
+      const ts = (m.createdTs || 0) * 1000;
+      return ts >= start && ts < end;
+    });
+    console.error(`Found ${memos.length} memos for ${label}`);
+    if (format === "json") formatJson(memos);
+    else formatTable(memos);
+  } else {
+    const res = await request("GET", `/api/v1/memo?limit=${limit}`);
+    const memos = extractMemos(res);
+    if (format === "json") formatJson(memos);
+    else formatTable(memos);
+  }
 }
 
 async function cmdSearch(args) {
@@ -259,6 +274,24 @@ function getFlag(args, flag) {
   return args[idx + 1] || null;
 }
 
+function parseDateRange(date, today) {
+  const now = new Date();
+  // Force Asia/Shanghai timezone (UTC+8)
+  const offset = 8 * 60 * 60 * 1000;
+  if (today || !date) {
+    const localNow = new Date(now.getTime() + offset);
+    const y = localNow.getUTCFullYear(), mo = localNow.getUTCMonth(), d = localNow.getUTCDate();
+    const start = new Date(Date.UTC(y, mo, d) - offset).getTime();
+    const end = start + 24 * 60 * 60 * 1000;
+    return { start, end, label: `${y}-${String(mo+1).padStart(2,"0")}-${String(d).padStart(2,"0")}` };
+  }
+  // Parse YYYY-MM-DD
+  const [y, mo, d] = date.split("-").map(Number);
+  const start = new Date(Date.UTC(y, mo - 1, d) - offset).getTime();
+  const end = start + 24 * 60 * 60 * 1000;
+  return { start, end, label: date };
+}
+
 // ── Main ─────────────────────────────────────────────────────
 
 const HELP = `
@@ -268,6 +301,8 @@ Usage: cflow <command> [options]
 
 Commands:
   list                    List recent memos
+  list --today            List today's memos
+  list --date YYYY-MM-DD  List memos for a specific date
   search --keyword <kw>   Search memos by keyword (substring match)
   search --tag <tag>      Search memos by exact tag match
   get <id>                Get memo by ID
