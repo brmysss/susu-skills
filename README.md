@@ -1,16 +1,31 @@
 # susu-skills
 
-A collection of Claude Code / OpenClaw skills for personal productivity.
+A collection of AI agent skills for personal productivity and knowledge workflows.
+
+These skills are designed for Claude Code, Codex, OpenClaw, and other local-agent tools
+that can read files, run commands, and follow skill-style instructions.
 
 ## Skills
 
 | Skill | Description | Install |
 |-------|-------------|---------|
 | [cflow-cli](./cflow-cli/) | CLI tool for CFlow (Memos) - search, browse, create, and update memos | `npx skills add brmysss/susu-skills --subdir cflow-cli` |
+| [bilibili-video-note](./bilibili-video-note/) | Turn Bilibili or other video links into structured notes, offline HTML visual notes, and long-image slices | `npx skills add brmysss/susu-skills --subdir bilibili-video-note` |
+
+## Prompts
+
+| Prompt | Description |
+|--------|-------------|
+| [structured-video-note.prompt.md](./prompts/structured-video-note.prompt.md) | Reusable prompt for summary-first, source-grounded video/course transcript notes |
 
 ## About
 
-These skills are built for personal knowledge management workflows with Obsidian, CFlow (Memos), and other self-hosted tools.
+These skills are built for personal knowledge management workflows with Obsidian,
+CFlow (Memos), Bilibili/video learning materials, and other local-first tools.
+
+For Bilibili downloads, `bilibili-video-note` defaults to Edge cookies via
+`yt-dlp --cookies-from-browser edge`, because the author uses Edge as the logged-in
+browser. If you use another browser, change `edge` to your browser name.
 
 ## License
 
