@@ -12,6 +12,7 @@ that can read files, run commands, and follow skill-style instructions.
 | [cflow-cli](./cflow-cli/) | CLI tool for CFlow (Memos) - search, browse, create, and update memos | `npx skills add brmysss/susu-skills --subdir cflow-cli` |
 | [bilibili-video-note](./bilibili-video-note/) | Turn Bilibili or other video links into structured notes, offline HTML visual notes, and long-image slices | `npx skills add brmysss/susu-skills --subdir bilibili-video-note` |
 | [business-model-deep-analysis](./business-model-deep-analysis/) | Research business models through timelines, stage breakthroughs, growth flywheels, evidence grading, risks, and transfer analysis | `npx skills add brmysss/susu-skills --subdir business-model-deep-analysis` |
+| [苏苏概念图笔记](./苏苏概念图笔记/) | Turn articles, courses, transcripts, and long notes into auditable proposition inventories and medium-density Mermaid concept maps | `npx skills add brmysss/susu-skills --subdir 苏苏概念图笔记` |
 
 ## Prompts
 
