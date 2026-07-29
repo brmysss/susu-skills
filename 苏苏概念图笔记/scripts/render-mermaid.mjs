@@ -12,7 +12,7 @@ if (!args.input || !args.output) {
 const outputPath = path.resolve(args.output)
 const outputType = path.extname(outputPath).toLowerCase()
 if (![".png", ".svg"].includes(outputType)) fail("Output must end in .png or .svg")
-const scale = Number(args.scale || 2)
+const scale = Number(args.scale || 4)
 if (!Number.isFinite(scale) || scale < 1 || scale > 4) fail("--scale must be between 1 and 4")
 
 const source = fs.readFileSync(path.resolve(args.input), "utf8")
