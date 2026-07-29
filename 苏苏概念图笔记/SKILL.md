@@ -1,6 +1,6 @@
 ---
 name: 苏苏概念图笔记
-version: 1.0.4
+version: 1.0.5
 description: 把文章、课程、转写稿或长笔记制作成严格概念图笔记。只要用户提出“概念图”“概念笔记网络”“看一张图了解全文”“中密度 Mermaid”，或要求复刻苏苏认可的《万维钢：向上流动》中密度版本，就应使用本 Skill。默认交付完整的可审计命题清单与约 35–45 节点的中密度 Mermaid 主图；PNG 仅在现有环境可直接渲染时附加，不得为了生成 Mermaid 擅自安装 Chromium。不要用思维导图、文章目录、普通流程图或无关联词的关系图谱冒充概念图。
 ---
 
@@ -71,6 +71,16 @@ description: 把文章、课程、转写稿或长笔记制作成严格概念图�
 
 Mermaid Markdown 本身就是正式成品，不依赖 Chromium。优先交付代码块，让 Obsidian、IMA 或其他支持 Mermaid 的阅读器自行显示。
 
+### 图片导出决策
+
+按顺序选择，不要为了图片临时安装浏览器：
+
+1. **已有本地浏览器与 Playwright**：使用 `render-mermaid.mjs`，交付 SVG 和白底 4× PNG。这是隐私、清晰度和稳定性最好的路径。
+2. **没有浏览器，但有网络，且内容明确为公开／非敏感**：使用 `render-mermaid-kroki.mjs` 通过 Kroki POST 导出。默认优先白底 SVG；PNG 可能保留透明背景。
+3. **内容敏感、隐私边界不清楚或没有网络**：不调用远程服务，只交付 Mermaid Markdown；不得要求安装 Chromium。
+
+Kroki 是第三方服务，图表代码会离开当前环境。公开文章可以自动使用；个人记录、内部项目、客户资料、未公开决策等内容不得上传，除非用户明确授权。
+
 仅当环境已经具备 Node.js、Playwright 和可用浏览器，且用户需要独立图片时，才可执行。优先导出 SVG：
 
 ```bash
@@ -83,6 +93,17 @@ node scripts/render-mermaid.mjs --input "概念图.md" --output "概念图@4x.pn
 - 不要把 1× 或 2× 全图截图当作正式图片交付。只有用户明确要求小文件时才降低倍率，同时保留 SVG。
 
 在 IMA 等无法运行本地脚本的环境中，直接交付 Mermaid 代码。用户可将代码块粘贴到 Mermaid Live Editor（`https://mermaid.live`），再选择导出 SVG 或 PNG；这一步不要求用户安装 Chromium。
+
+如果 IMA 能运行 Node.js／网络请求，并且内容非敏感，优先使用自带的 Kroki POST 脚本：
+
+```bash
+node scripts/render-mermaid-kroki.mjs \
+  --input "概念图.md" \
+  --output "概念图.svg" \
+  --allow-remote
+```
+
+该脚本把 Mermaid 正文放入 POST 请求体，适合 35–45 节点的复杂图，不会遇到 mermaid.ink 原版的超长 URL 问题。SVG 默认插入白色背景；如输出 PNG，Kroki 可能返回透明背景。
 
 若缺少 Playwright、Chromium、Chrome、Mermaid CLI 或安装权限：
 
