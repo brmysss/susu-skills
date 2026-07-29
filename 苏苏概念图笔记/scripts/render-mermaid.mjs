@@ -6,8 +6,14 @@ import { createRequire } from "node:module"
 
 const args = parseArgs(process.argv.slice(2))
 if (!args.input || !args.output) {
-  fail("Usage: render-mermaid.mjs --input <markdown-or-mmd> --output <png>")
+  fail("Usage: render-mermaid.mjs --input <markdown-or-mmd> --output <png-or-svg> [--scale 2]")
 }
+
+const outputPath = path.resolve(args.output)
+const outputType = path.extname(outputPath).toLowerCase()
+if (![".png", ".svg"].includes(outputType)) fail("Output must end in .png or .svg")
+const scale = Number(args.scale || 2)
+if (!Number.isFinite(scale) || scale < 1 || scale > 4) fail("--scale must be between 1 and 4")
 
 const source = fs.readFileSync(path.resolve(args.input), "utf8")
 const match = source.match(/```mermaid\s*\n([\s\S]*?)```/)
@@ -31,7 +37,7 @@ const browserCandidates = [
 const executablePath = browserCandidates.find((candidate) => fs.existsSync(candidate))
 const browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
 try {
-  const page = await browser.newPage({ viewport: { width: 1800, height: 1400 }, deviceScaleFactor: 1 })
+  const page = await browser.newPage({ viewport: { width: 1800, height: 1400 }, deviceScaleFactor: scale })
   await page.setContent(`<!doctype html><html><head><meta charset="utf-8"><style>
     html,body{margin:0;background:#fff}#mount{display:inline-block;padding:48px;min-width:1200px}
   </style></head><body><main id="mount"></main>
@@ -47,8 +53,13 @@ try {
   const error = await page.locator("body").getAttribute("data-mermaid-error")
   if (error) fail(error)
   const mount = page.locator("#mount")
-  await mount.screenshot({ path: path.resolve(args.output) })
-  console.log(JSON.stringify({ ok: true, output: path.resolve(args.output) }))
+  if (outputType === ".svg") {
+    const svg = await mount.locator("svg").evaluate((element) => element.outerHTML)
+    fs.writeFileSync(outputPath, `${svg}\n`, "utf8")
+  } else {
+    await mount.screenshot({ path: outputPath })
+  }
+  console.log(JSON.stringify({ ok: true, output: outputPath, type: outputType.slice(1), scale }))
 } finally {
   await browser.close()
 }
@@ -58,6 +69,7 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i += 1) {
     if (argv[i] === "--input") result.input = argv[++i]
     else if (argv[i] === "--output") result.output = argv[++i]
+    else if (argv[i] === "--scale") result.scale = argv[++i]
     else fail(`Unknown argument: ${argv[i]}`)
   }
   return result
