@@ -4,13 +4,16 @@
 
 它不只套用商业模式画布，还会还原发展时间线、识别阶段性破局点、构建增长飞轮，并用证据分级、风险搜索和反事实检验避免把成功案例写成宣传故事。
 
-## Install
+## 安装
 
 ```bash
-npx skills add brmysss/susu-skills --subdir 苏苏商业模式分析
+git clone https://github.com/brmysss/susu-skills.git
+cp -R 'susu-skills/苏苏商业模式分析' ~/.agents/skills/苏苏商业模式分析
 ```
 
-也可以直接复制目录到 Claude Code、Codex 或其他本地 Agent 的 skills 目录。
+当前通用 Skills CLI 能发现中文 Skill，但部分版本会把纯中文目录安装为
+`unnamed-skill`。因此建议按上面的方式复制中文目录，Claude Code、Codex
+及其他支持 Skills 的本地 Agent 均可读取。
 
 ## Example prompts
 
