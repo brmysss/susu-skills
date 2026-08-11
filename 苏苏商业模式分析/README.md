@@ -1,4 +1,4 @@
-# business-model-deep-analysis
+# 苏苏商业模式分析
 
 一个面向公司、品牌、景区、平台、产品、门店和个人 IP 的商业模式深度分析 Skill。
 
@@ -7,7 +7,7 @@
 ## Install
 
 ```bash
-npx skills add brmysss/susu-skills --subdir business-model-deep-analysis
+npx skills add brmysss/susu-skills --subdir 苏苏商业模式分析
 ```
 
 也可以直接复制目录到 Claude Code、Codex 或其他本地 Agent 的 skills 目录。
@@ -29,7 +29,7 @@ npx skills add brmysss/susu-skills --subdir business-model-deep-analysis
 ## Structure
 
 ```text
-business-model-deep-analysis/
+苏苏商业模式分析/
 ├── SKILL.md
 ├── README.md
 ├── references/
