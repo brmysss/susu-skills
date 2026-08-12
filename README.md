@@ -13,6 +13,7 @@ that can read files, run commands, and follow skill-style instructions.
 | [bilibili-video-note](./bilibili-video-note/) | Turn Bilibili or other video links into structured notes, offline HTML visual notes, and long-image slices | `npx skills add brmysss/susu-skills --subdir bilibili-video-note` |
 | [苏苏商业模式分析](./苏苏商业模式分析/) | Research business models through timelines, stage breakthroughs, growth flywheels, evidence grading, risks, and transfer analysis | 克隆仓库后，将 `苏苏商业模式分析/` 复制到 Agent 的 Skills 目录 |
 | [苏苏概念图笔记](./苏苏概念图笔记/) | Turn articles, courses, transcripts, and long notes into auditable proposition inventories and medium-density Mermaid concept maps | `npx skills add brmysss/susu-skills --subdir 苏苏概念图笔记` |
+| [目标管理](./goal-management/) | Clarify vague wishes into outcomes, 12-week plans, weekly reviews, and focused daily actions | `npx skills add brmysss/susu-skills --subdir goal-management` |
 
 ## Prompts
 
